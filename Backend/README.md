@@ -172,10 +172,6 @@ If the email or password is incorrect, the endpoint will return an error message
 }
 ```
 
-# User API Documentation
-
-// ...existing code...
-
 ## Endpoint: `/users/profile`
 
 ### Method: GET
@@ -247,3 +243,131 @@ Returns a success message upon logout.
 
 - `200 OK`: Successfully logged out
 - `401 Unauthorized`: Invalid or missing authentication token
+
+# Captain Registration Endpoint
+
+## Endpoint: `/captains/register`
+
+### Method: POST
+
+### Description
+
+This endpoint allows for the registration of a new captain. It requires the captain's first name, last name, email, password, and vehicle details.
+
+### Request Body
+
+The request body must be a JSON object containing the following fields:
+
+- `fullname` (object, required): The full name of the captain.
+  - `firstname` (string, required): The first name of the captain.
+  - `lastname` (string, required): The last name of the captain.
+- `email` (string, required): The email address of the captain.
+- `password` (string, required): The password for the captain.
+- `vehicle` (object, required): The vehicle details of the captain.
+  - `color` (string, required): The color of the vehicle.
+  - `plate` (string, required): The plate number of the vehicle.
+  - `capacity` (number, required): The capacity of the vehicle.
+  - `vehicleType` (string, required): The type of the vehicle (car, motorcycle, auto).
+
+### Example Request
+
+```json
+{
+    "fullname": {
+        "firstname": "Jane",
+        "lastname": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "password": "securepassword123",
+    "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+    }
+}
+```
+
+### Response
+
+On successful registration, the endpoint will return a JSON object containing the newly created captain's details and a token.
+
+### Example Response
+
+```json
+{
+    "token": "jwt_token_here",
+    "captain": {
+        "fullname": {
+            "firstname": "Jane",
+            "lastname": "Doe"
+        },
+        "email": "jane.doe@example.com",
+        "vehicle": {
+            "color": "red",
+            "plate": "ABC123",
+            "capacity": 4,
+            "vehicleType": "car"
+        }
+    }
+}
+```
+
+### Status Codes
+
+- `201 Created`: Captain successfully registered.
+- `400 Bad Request`: Validation error or missing required fields.
+
+### Error Handling
+
+If any of the required fields are missing, the endpoint will return an error message:
+
+```json
+{
+    "error": "All fields are required"
+}
+```
+
+If there are validation errors, the endpoint will return an array of error messages:
+
+```json
+{
+    "errors": [
+        {
+            "msg": "Invalid Email",
+            "param": "email",
+            "location": "body"
+        },
+        {
+            "msg": "First name must be at least 3 characters long!!",
+            "param": "fullname.firstname",
+            "location": "body"
+        },
+        {
+            "msg": "Password must be at least 6 characters long",
+            "param": "password",
+            "location": "body"
+        },
+        {
+            "msg": "Color must be at least 3 characters long",
+            "param": "vehicle.color",
+            "location": "body"
+        },
+        {
+            "msg": "Plate must be at least 3 characters long",
+            "param": "vehicle.plate",
+            "location": "body"
+        },
+        {
+            "msg": "Capacity must be at least 1",
+            "param": "vehicle.capacity",
+            "location": "body"
+        },
+        {
+            "msg": "Invalid Vehicle Type",
+            "param": "vehicle.vehicleType",
+            "location": "body"
+        }
+    ]
+}
+```

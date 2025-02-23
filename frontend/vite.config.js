@@ -4,4 +4,12 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(),tailwindcss()],
+  server: {
+    fs: {
+      allow: [
+        'C:/Users/Hp/Desktop/My works/Uber-video/node_modules',
+        'C:/Users/Hp/Desktop/My works/Uber-video/frontend'
+      ]
+    }
+  }
 })
